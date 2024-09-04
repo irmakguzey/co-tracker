@@ -5,24 +5,23 @@
 # LICENSE file in the root directory of this source tree.
 
 import torch
-
 from cotracker.models.core.cotracker.cotracker import CoTracker2
 
 
-def build_cotracker(
-    checkpoint: str,
-):
+def build_cotracker(checkpoint: str, single_frame=False):
     if checkpoint is None:
-        return build_cotracker()
+        return build_cotracker(single_frame=single_frame)
     model_name = checkpoint.split("/")[-1].split(".")[0]
     if model_name == "cotracker":
-        return build_cotracker(checkpoint=checkpoint)
+        return build_cotracker(checkpoint=checkpoint, single_frame=single_frame)
     else:
         raise ValueError(f"Unknown model name {model_name}")
 
 
-def build_cotracker(checkpoint=None):
-    cotracker = CoTracker2(stride=4, window_len=8, add_space_attn=True)
+def build_cotracker(checkpoint=None, single_frame=False):
+    cotracker = CoTracker2(
+        stride=4, window_len=8, add_space_attn=True, single_frame=single_frame
+    )
 
     if checkpoint is not None:
         with open(checkpoint, "rb") as f:

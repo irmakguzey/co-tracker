@@ -1,0 +1,4 @@
+*.pth
+*.pyc
+
+cotracker.egg-info/*
